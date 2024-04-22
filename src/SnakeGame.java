@@ -23,11 +23,12 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
      ArrayList<Tile> sBody;
      Random random;
      Timer loop;
+     boolean gameOver;
 
      SnakeGame(int width,int Height){
         this.width = width;
         this.Height = Height;
-        speedX=1;speedY=0;
+        speedX=speedY=0;
         setPreferredSize(new Dimension(this.width,this.Height));
         setBackground(Color.BLACK);
         addKeyListener(this);
@@ -41,6 +42,8 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
         placeFood();
         loop = new Timer(100,this);
         loop.start();
+
+        gameOver=false;
      }
      public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -61,14 +64,17 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
             g.setColor(Color.green);
             g.fillRect(snakePart.x*tileSize, snakePart.y*tileSize, tileSize, tileSize);
         }
+
+        //Score
+        
      }
 
      public void placeFood(){
          food.x=random.nextInt(width/tileSize);
          food.y=random.nextInt(Height/tileSize);
      }
-     public boolean collison(Tile snake, Tile food){
-        return snake.x == food.x && snake.y == food.y;
+     public boolean collison(Tile obj1, Tile obj2){
+        return obj1.x == obj2.x && obj1.y == obj2.y;
      }
      public void move(){
 
@@ -91,11 +97,24 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
 
         head.x+=speedX;
         head.y+=speedY;
+
+        for(int i = 0 ; i< sBody.size(); i++){
+            Tile snakepart = sBody.get(i);
+            if(collison(head, snakepart)){
+                gameOver=true;
+            }
+        }
+        if(head.x*tileSize <= 0 || head.y*tileSize <= 0 || head.x*tileSize >= 600 || head.y*tileSize >= 600){
+            gameOver=true;
+        }
      }
     @Override
     public void actionPerformed(ActionEvent e) {
         move();
         repaint();
+        if(gameOver){
+            loop.stop();
+        }
     }
     @Override
     public void keyTyped(KeyEvent e) {}
