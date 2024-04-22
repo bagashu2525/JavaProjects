@@ -15,7 +15,7 @@ public class App {
 
         SnakeGame game = new SnakeGame(600, 600);
         frame.add(game,BorderLayout.WEST);
-        Display score = new Display(600,100);
+        Display score = new Display(game,600,100);
         frame.add(score,BorderLayout.SOUTH);
         frame.pack();
         frame.setResizable(false);

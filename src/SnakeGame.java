@@ -16,15 +16,17 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
     }
      int width;
      int Height;
-     int tileSize = 25;
+     public int tileSize = 25;
      int speedX,speedY;
+     public int count=0;
 
      Tile head,food;
      ArrayList<Tile> sBody;
      Random random;
      Timer loop;
      boolean gameOver;
-
+     SnakeGame(){}
+     
      SnakeGame(int width,int Height){
         this.width = width;
         this.Height = Height;
@@ -72,6 +74,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
      public void placeFood(){
          food.x=random.nextInt(width/tileSize);
          food.y=random.nextInt(Height/tileSize);
+         count++;
      }
      public boolean collison(Tile obj1, Tile obj2){
         return obj1.x == obj2.x && obj1.y == obj2.y;
