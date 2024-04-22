@@ -11,7 +11,7 @@ public class Display extends JPanel implements ActionListener {
         this.width = width;
         this.height = height;
         snake=game;
-        setBackground(Color.cyan);
+        setBackground(Color.black);
         setPreferredSize(new Dimension(this.width, this.height));
         
         // Start a timer to repaint the panel at regular intervals
@@ -29,9 +29,10 @@ public class Display extends JPanel implements ActionListener {
         g.setFont(new Font("Arial", Font.PLAIN, 16));
         if (snake.gameOver) {
             g.setColor(Color.RED);
-            g.drawString("Game Over: " + snake.count, snake.tileSize - 16, snake.tileSize);
+            g.drawString("Game Over!!! Score: " + snake.count, snake.tileSize - 16, snake.tileSize);
             System.out.println("Game Over. Score: " + snake.count);
         } else {
+            g.setColor(Color.white);
             g.drawString("Score: " + snake.count, snake.tileSize - 16, snake.tileSize);
             System.out.println("Current Score: " + snake.count);
         }
