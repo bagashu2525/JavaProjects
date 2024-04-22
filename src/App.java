@@ -13,5 +13,6 @@ public class App {
         frame.add(game);
         frame.pack();
         frame.setResizable(false);
+        game.requestFocus();
     }
 }

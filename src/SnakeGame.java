@@ -6,7 +6,7 @@ import javax.swing.*;
 
 import javax.swing.JPanel;
 
-public class SnakeGame extends JPanel implements ActionListener{
+public class SnakeGame extends JPanel implements ActionListener,KeyListener{
     private class Tile{
         int x,y;
         Tile(int x, int y){
@@ -17,22 +17,29 @@ public class SnakeGame extends JPanel implements ActionListener{
      int width;
      int Height;
      int tileSize = 25;
+     int speedX,speedY;
 
      Tile head,food;
+     ArrayList<Tile> sBody;
      Random random;
      Timer loop;
 
      SnakeGame(int width,int Height){
         this.width = width;
         this.Height = Height;
+        speedX=1;speedY=0;
         setPreferredSize(new Dimension(this.width,this.Height));
         setBackground(Color.BLACK);
+        addKeyListener(this);
+        setFocusable(true);
         
         head= new Tile(5, 5);
         food = new Tile(10,10);
+        sBody = new ArrayList<Tile>();
         random = new Random();
+
         placeFood();
-        loop = new Timer(1000,this);
+        loop = new Timer(100,this);
         loop.start();
      }
      public void paintComponent(Graphics g){
@@ -40,22 +47,75 @@ public class SnakeGame extends JPanel implements ActionListener{
         draw(g);
      }
      public void draw(Graphics g){
-        //snake
+        //snake head
         g.setColor(Color.green);
         g.fillRect(head.x*tileSize, head.y*tileSize, tileSize, tileSize);
 
         //food
         g.setColor(Color.red);
         g.fillOval(food.x*tileSize,food.y*tileSize,tileSize,tileSize);
+
+        //snake body
+        for (int i = 0; i<sBody.size(); i++){
+            Tile snakePart = sBody.get(i);
+            g.setColor(Color.green);
+            g.fillRect(snakePart.x*tileSize, snakePart.y*tileSize, tileSize, tileSize);
+        }
      }
 
      public void placeFood(){
          food.x=random.nextInt(width/tileSize);
          food.y=random.nextInt(Height/tileSize);
      }
+     public boolean collison(Tile snake, Tile food){
+        return snake.x == food.x && snake.y == food.y;
+     }
+     public void move(){
+
+        if(collison(head, food)){
+            sBody.add(new Tile(food.x,food.y));
+            placeFood();
+            
+        }
+        
+        for(int i=sBody.size()-1;i>=0;i--){
+            Tile snakepart = sBody.get(i);
+            if(i==0){
+                snakepart.x=head.x;snakepart.y=head.y;
+            }
+            else{
+                Tile prev =sBody.get(i-1);
+                snakepart.x= prev.x;snakepart.y= prev.y;
+            }
+        }
+
+        head.x+=speedX;
+        head.y+=speedY;
+     }
     @Override
     public void actionPerformed(ActionEvent e) {
+        move();
         repaint();
     }
+    @Override
+    public void keyTyped(KeyEvent e) {}
+    @Override
+    public void keyPressed(KeyEvent e) {
+        // System.out.println("KeyEvent: " + e.getKeyCode());
+        if (e.getKeyCode() == KeyEvent.VK_UP && speedY != 1) {
+            speedX = 0;speedY = -1;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_DOWN && speedY != -1) {
+            speedX = 0;speedY = 1;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_LEFT && speedX != 1) {
+            speedX = -1;speedY = 0;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_RIGHT && speedX != -1) {
+            speedX = 1;speedY = 0;
+        }
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {}
 
 }
