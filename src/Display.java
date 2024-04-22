@@ -11,11 +11,9 @@ public class Display extends JPanel implements ActionListener {
         this.width = width;
         this.height = height;
         snake=game;
-        setBackground(Color.yellow);
+        setBackground(Color.cyan);
         setPreferredSize(new Dimension(this.width, this.height));
-         // Assuming SnakeGame is properly defined
         
-
         // Start a timer to repaint the panel at regular intervals
         timer = new Timer(100, this); // Adjust the delay as needed
         timer.start();

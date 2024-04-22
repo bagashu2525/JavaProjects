@@ -18,7 +18,7 @@ public class SnakeGame extends JPanel implements ActionListener,KeyListener{
      int Height;
      public int tileSize = 25;
      int speedX,speedY;
-     public int count=0;
+     public int count=-1;
 
      Tile head,food;
      ArrayList<Tile> sBody;
