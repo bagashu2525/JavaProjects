@@ -12,6 +12,6 @@ public class App {
         SnakeGame game = new SnakeGame(width, height);
         frame.add(game);
         frame.pack();
-        
+        frame.setResizable(false);
     }
 }
