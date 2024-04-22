@@ -2,10 +2,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.*;
 
 import javax.swing.JPanel;
 
-public class SnakeGame extends JPanel{
+public class SnakeGame extends JPanel implements ActionListener{
     private class Tile{
         int x,y;
         Tile(int x, int y){
@@ -19,6 +20,7 @@ public class SnakeGame extends JPanel{
 
      Tile head,food;
      Random random;
+     Timer loop;
 
      SnakeGame(int width,int Height){
         this.width = width;
@@ -30,6 +32,8 @@ public class SnakeGame extends JPanel{
         food = new Tile(10,10);
         random = new Random();
         placeFood();
+        loop = new Timer(1000,this);
+        loop.start();
      }
      public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -49,5 +53,9 @@ public class SnakeGame extends JPanel{
          food.x=random.nextInt(width/tileSize);
          food.y=random.nextInt(Height/tileSize);
      }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        repaint();
+    }
 
 }
